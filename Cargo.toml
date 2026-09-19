@@ -1,0 +1,29 @@
+[package]
+name = "bosch-cam-proxy"
+version = "0.1.0"
+edition = "2021"
+description = "Proxy that re-exposes Bosch Smart Camera streams as plain RTSP URLs"
+license = "0BSD"
+
+[[bin]]
+name = "bosch-cam-proxy"
+path = "src/main.rs"
+
+[dependencies]
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "io-util", "process", "sync", "time", "signal"] }
+# native-tls uses Windows SChannel on the windows-gnu target — no ring/OpenSSL C build.
+reqwest = { version = "0.12", default-features = false, features = ["native-tls", "json"] }
+native-tls = "0.2"
+tokio-native-tls = "0.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+url = "2"
+base64 = "0.22"
+clap = { version = "4", features = ["derive", "env"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+anyhow = "1"
+thiserror = "1"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt", "macros", "test-util"] }
