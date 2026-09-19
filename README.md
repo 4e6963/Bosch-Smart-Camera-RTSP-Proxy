@@ -1,4 +1,4 @@
-# bosch-cam-proxy
+# Bosch Smart Camera RTSP Proxy
 
 Re-exposes Bosch Smart Camera System streams as plain `rtsp://` URLs, so any
 standard RTSP client (VLC, Frigate, ffmpeg, a NAS, ...) can view them without
