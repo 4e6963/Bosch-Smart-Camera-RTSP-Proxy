@@ -1,0 +1,56 @@
+services:
+  bosch-cam-proxy:
+    image: ghcr.io/4e6963/bosch-smart-camera-rtsp-proxy:latest
+    restart: unless-stopped
+    ports:
+      - "8554:8554"
+    volumes:
+      - ./data:/data
+      # environment:
+      # --- Bosch account / OAuth client ---
+      # Client id of the Bosch mobile app OAuth client. Defaults to the
+      # "prod" environment's built-in client id if unset.
+      # - BOSCH_CLIENT_ID=residential_app
+
+      # Client secret matching BOSCH_CLIENT_ID. Has a working default baked
+      # into the binary (the public app secret); override only if Bosch
+      # rotates it.
+      # - BOSCH_CLIENT_SECRET=yUmjfFutWfKbYOOficWFrcFeD14oFW0C
+
+      # --- TLS / PKI ---
+      # Path (inside the container) to a PEM file overriding the Bosch root
+      # CA embedded at compile time. Only needed if Bosch rotates their
+      # private-PKI root.
+      # - BOSCH_CA_BUNDLE=/data/bosch-ca.pem
+
+      # Disable TLS certificate verification entirely. Insecure -- debugging
+      # only. Accepts 1|true|yes.
+      # - BOSCH_TLS_INSECURE=false
+
+      # --- Storage ---
+      # Where OAuth tokens are persisted across restarts. Defaults to
+      # ./tokens.json (relative to the container's working directory,
+      # /data); mount a volume over that path to persist it.
+      # - TOKEN_STORE=/data/tokens.json
+
+      # --- RTSP server ---
+      # Address:port the RTSP server binds to inside the container.
+      # - RTSP_BIND=0.0.0.0:8554
+
+      # Default camera route: local (direct LAN, port 443) or relay
+      # (through Bosch's cloud relay).
+      # - RTSP_DEFAULT_ROUTE=local
+
+      # Relay the camera's audio track in addition to video. Accepts
+      # 0|false|no to disable (defaults to enabled).
+      # - RTSP_AUDIO=1
+
+      # Serve a "Connecting to camera..." placeholder clip while the real
+      # upstream ingest is starting up. Accepts 0|false|no to disable
+      # (defaults to enabled).
+      # - RTSP_CONNECTING_PLACEHOLDER=1
+
+      # --- Logging ---
+      # Standard tracing-subscriber env filter, e.g. "info",
+      # "bosch_cam_proxy=debug". Defaults to "bosch_cam_proxy=info".
+      # - RUST_LOG=bosch_cam_proxy=info
