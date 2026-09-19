@@ -3,7 +3,6 @@
 .claude
 /target
 tokens.json
-bosch-ca.pem
 .env
 *.log
 /bosch-cam-proxy.iml
