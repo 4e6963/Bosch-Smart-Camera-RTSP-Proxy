@@ -17,14 +17,18 @@ use tracing::{debug, warn};
 
 use crate::error::{ProxyError, Result};
 
-/// Common Windows system fonts to try for the placeholder's text overlay, in order of
-/// preference. ffmpeg's `drawtext` needs a concrete font file on Windows — fontconfig
-/// discovery there is unreliable — so this is checked at runtime rather than assumed;
-/// if none exist, the placeholder falls back to a plain color card.
+/// System fonts to try for the placeholder's text overlay, in order of preference.
+/// ffmpeg's `drawtext` needs a concrete font file — fontconfig discovery is
+/// unreliable on Windows and no font ships in the minimal Docker image at all —
+/// so this is checked at runtime rather than assumed; if none exist, the
+/// placeholder falls back to a plain color card.
 const FONT_CANDIDATES: &[&str] = &[
     "C:/Windows/Fonts/segoeui.ttf",
     "C:/Windows/Fonts/arial.ttf",
     "C:/Windows/Fonts/calibri.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    "/usr/share/fonts/dejavu/DejaVuSans.ttf",
+    "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
 ];
 
 fn drawtext_filter() -> Option<String> {

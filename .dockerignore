@@ -1,0 +1,10 @@
+# Whitelist: ignore everything, then explicitly allow back in only what the
+# Dockerfile's COPY commands actually need. Anything new added to the repo
+# later (secrets, IDE files, ...) is excluded by default instead of having to
+# remember to add it here.
+*
+!Cargo.toml
+!Cargo.lock
+!bosch-ca.pem
+!src
+!src/**
